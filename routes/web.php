@@ -52,11 +52,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirectToProvider']);
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
 
-// Blog post viewing routes (available to all)
-Route::middleware(['auth'])->group(function () {
-    Route::resource('blog-posts', BlogPostController::class);
-});
-
 // Blog post management routes (only for admin and editor)
 Route::middleware(['auth', 'role:admin|editor'])->group(function () {
     Route::get('blog-posts/create', [BlogPostController::class, 'create'])->name('blog-posts.create');
