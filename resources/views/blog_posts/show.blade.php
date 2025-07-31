@@ -1,37 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
         <!-- Breadcrumb -->
         <nav class="mb-8">
             <ol class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                <li><a href="{{ route('blog-posts.index') }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">Blog Posts</a></li>
-                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li><a href="{{ route('blog-posts.index') }}" class="transition-colors duration-200 hover:text-primary-600 dark:hover:text-primary-400">Blog Posts</a></li>
+                <li><i class="text-xs fas fa-chevron-right"></i></li>
                 <li class="text-gray-900 dark:text-white">{{ $post->title }}</li>
             </ol>
         </nav>
 
         <!-- Article Header -->
-        <article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+        <article class="mb-8 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <!-- Featured Image -->
             @if($post->image)
-            <div class="aspect-video overflow-hidden">
+            <div class="overflow-hidden aspect-video">
                 <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
-                    class="w-full h-full object-cover">
+                    class="object-cover w-full h-full">
             </div>
             @endif
 
             <!-- Article Content -->
             <div class="p-8">
                 <!-- Title -->
-                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">{{ $post->title }}</h1>
+                <h1 class="mb-4 text-4xl font-bold leading-tight text-gray-900 dark:text-white">{{ $post->title }}</h1>
 
                 <!-- Meta Information -->
                 <div class="flex flex-wrap items-center gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
                     <div class="flex items-center">
-                        <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mr-2">
-                            <span class="text-primary-600 dark:text-primary-400 font-semibold text-sm">
+                        <div class="flex items-center justify-center w-8 h-8 mr-2 rounded-full bg-primary-100 dark:bg-primary-900">
+                            <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">
                                 {{ substr($post->author->name ?? 'A', 0, 1) }}
                             </span>
                         </div>
@@ -39,7 +39,7 @@
                     </div>
 
                     <span class="flex items-center">
-                        <i class="fas fa-calendar mr-1"></i>
+                        <i class="mr-1 fas fa-calendar"></i>
                         {{ $post->created_at->format('M d, Y') }}
                     </span>
 
@@ -52,9 +52,9 @@
 
                 <!-- Tags -->
                 @if($post->tags->count())
-                <div class="mb-6 flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 mb-6">
                     @foreach($post->tags as $tag)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    <span class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                         #{{ $tag->name }}
                     </span>
                     @endforeach
@@ -69,7 +69,7 @@
         </article>
 
         <!-- Action Buttons -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <div class="p-6 mb-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center space-x-4">
                     <!-- Like Button -->
@@ -77,14 +77,14 @@
                     <form action="{{ route('blog.like', $post) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
-                            class="inline-flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-200">
+                            class="inline-flex items-center px-4 py-2 text-gray-700 transition-colors duration-200 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <i class="fas fa-heart mr-2 {{ Auth::user()->likedPosts->contains($post->id) ? 'text-red-500' : '' }}"></i>
                             <span>{{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count()) }}</span>
                         </button>
                     </form>
                     @else
-                    <div class="inline-flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-heart mr-2"></i>
+                    <div class="inline-flex items-center px-4 py-2 text-gray-500 border border-gray-300 rounded-lg dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <i class="mr-2 fas fa-heart"></i>
                         <span>{{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count()) }}</span>
                     </div>
                     @endauth
@@ -94,7 +94,7 @@
                     <form action="{{ route('bookmarks.toggle', $post) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
-                            class="inline-flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-200">
+                            class="inline-flex items-center px-4 py-2 text-gray-700 transition-colors duration-200 bg-white border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <i class="fas fa-bookmark mr-2 {{ $hasBookmarked ? 'text-primary-500' : '' }}"></i>
                             <span>{{ $hasBookmarked ? 'Saved' : 'Save for Later' }}</span>
                         </button>
@@ -104,7 +104,7 @@
 
                 <div class="flex items-center space-x-2">
                     <span class="text-sm text-gray-500 dark:text-gray-400">
-                        <i class="fas fa-comment mr-1"></i>
+                        <i class="mr-1 fas fa-comment"></i>
                         {{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}
                     </span>
                 </div>
@@ -112,10 +112,10 @@
         </div>
 
         <!-- Comments Section -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Comments</h2>
-                <p class="text-gray-600 dark:text-gray-400 mt-1">Join the conversation</p>
+                <p class="mt-1 text-gray-600 dark:text-gray-400">Join the conversation</p>
             </div>
 
             <!-- Comment Form -->
@@ -124,24 +124,24 @@
                 <form action="{{ route('comments.store', $post) }}" method="POST">
                     @csrf
                     <div class="mb-4">
-                        <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add a comment</label>
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Add a comment</label>
                         <textarea name="content" id="content" rows="4"
-                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                            class="w-full px-4 py-3 text-gray-900 bg-white border border-gray-300 rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                             placeholder="Share your thoughts..." required></textarea>
                         @error('content')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200">
-                        <i class="fas fa-paper-plane mr-2"></i>Post Comment
+                        class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors duration-200 rounded-lg bg-primary-600 hover:bg-primary-700">
+                        <i class="mr-2 fas fa-paper-plane"></i>Post Comment
                     </button>
                 </form>
             </div>
             @else
             <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="text-center py-4">
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Please <a href="{{ route('login') }}" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">login</a> to comment.</p>
+                <div class="py-4 text-center">
+                    <p class="mb-4 text-gray-600 dark:text-gray-400">Please <a href="{{ route('login') }}" class="font-medium text-primary-600 dark:text-primary-400 hover:underline">login</a> to comment.</p>
                 </div>
             </div>
             @endauth
@@ -154,8 +154,8 @@
                     <div class="flex space-x-4">
                         <!-- Avatar -->
                         <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
-                                <span class="text-primary-600 dark:text-primary-400 font-semibold text-sm">
+                            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900">
+                                <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">
                                     {{ substr($comment->user->name, 0, 1) }}
                                 </span>
                             </div>
@@ -174,12 +174,12 @@
                                     @if(Auth::id() === $comment->user_id)
                                     @if($editingCommentId == $comment->id)
                                     <a href="{{ route('blog-posts.show', $post) }}"
-                                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200">
+                                        class="text-sm text-gray-500 transition-colors duration-200 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
                                         Cancel
                                     </a>
                                     @else
-                                    <a href="{{ route('blog.show', ['slug' => $post->slug, 'edit' => $comment->id]) }}"
-                                        class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200">
+                                    <a href="{{ route('blog-posts.show', ['slug' => $post->slug, 'edit' => $comment->id]) }}"
+                                        class="text-sm transition-colors duration-200 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
                                         Edit
                                     </a>
                                     @endif
@@ -190,7 +190,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors duration-200"
+                                            class="text-sm text-red-600 transition-colors duration-200 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                                             onclick="return confirm('Are you sure you want to delete this comment?')">
                                             Delete
                                         </button>
@@ -206,7 +206,7 @@
                                 @csrf
                                 @method('PUT')
                                 <textarea name="content" rows="3"
-                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                                    class="w-full px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded-lg resize-none dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                     required>{{ old('content', $comment->content) }}</textarea>
                                 @error('content')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -219,7 +219,7 @@
                                 </div>
                             </form>
                             @else
-                            <div class="prose prose-sm max-w-none dark:prose-invert">
+                            <div class="prose-sm prose max-w-none dark:prose-invert">
                                 <p class="text-gray-700 dark:text-gray-300">{{ $comment->content }}</p>
                             </div>
                             @endif
@@ -228,11 +228,11 @@
                     @endforeach
                 </div>
                 @else
-                <div class="text-center py-8">
-                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-comments text-2xl text-gray-400 dark:text-gray-500"></i>
+                <div class="py-8 text-center">
+                    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full dark:bg-gray-700">
+                        <i class="text-2xl text-gray-400 fas fa-comments dark:text-gray-500"></i>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No comments yet</h3>
+                    <h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-white">No comments yet</h3>
                     <p class="text-gray-500 dark:text-gray-400">Be the first to share your thoughts!</p>
                 </div>
                 @endif
@@ -242,8 +242,8 @@
         <!-- Back to Posts -->
         <div class="mt-8 text-center">
             <a href="{{ route('blog-posts.index') }}"
-                class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors duration-200">
-                <i class="fas fa-arrow-left mr-2"></i>Back to all posts
+                class="inline-flex items-center font-medium transition-colors duration-200 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                <i class="mr-2 fas fa-arrow-left"></i>Back to all posts
             </a>
         </div>
     </div>
