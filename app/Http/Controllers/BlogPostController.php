@@ -8,6 +8,9 @@ use App\Models\BlogPost;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\TwitterCard;
 
 
 class BlogPostController extends Controller
@@ -143,15 +146,25 @@ class BlogPostController extends Controller
         $hasBookmarked = false;
 
         if ($user) {
-            // Check if user has bookmarked this post
             $hasBookmarked = $user->bookmarkedPosts()->where('blog_post_id', $post->id)->exists();
         }
 
+        // ✅ SEO metadata setup
+        SEOMeta::setTitle($post->title);
+        SEOMeta::setDescription(substr(strip_tags($post->content), 0, 160));
+        SEOMeta::addKeyword($post->tags->pluck('name')->toArray());
+
+        OpenGraph::setTitle($post->title)
+            ->setDescription(substr(strip_tags($post->content), 0, 160))
+            ->setUrl(url()->current())
+            ->addImage(asset('storage/images/' . $post->image));
+
+        TwitterCard::setTitle($post->title)
+            ->setDescription(substr(strip_tags($post->content), 0, 160))
+            ->setImage(asset('storage/images/' . $post->image));
+
         return view('blog_posts.show', compact('post', 'editingCommentId', 'hasBookmarked'));
     }
-
-
-
 
     /**
      * Show the form for editing the specified resource.
