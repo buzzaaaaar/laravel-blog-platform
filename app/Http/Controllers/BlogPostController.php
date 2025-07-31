@@ -75,9 +75,6 @@ class BlogPostController extends Controller
         return view('blog_posts.index', compact('posts', 'categories', 'tags', 'authors'));
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -236,6 +233,4 @@ class BlogPostController extends Controller
 
         return redirect()->back();
     }
-
-
 }

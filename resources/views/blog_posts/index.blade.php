@@ -35,6 +35,7 @@
             class="p-6 mb-8 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <form id="filterForm" method="GET" action="{{ route('blog-posts.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+
                     <!-- Search Input -->
                     <div>
                         <label for="searchInput"
@@ -50,18 +51,21 @@
 
                     <!-- Category Filter -->
                     <div>
-                        <label for="categorySelect"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                        <div x-data="{ open: false }" class="relative">
-                            <!-- Dropdown button -->
+                        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                        <div x-data="{ open: false }" class="relative" x-cloak>
                             <button type="button" @click="open = !open"
                                 class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 Select Categories
                                 <span class="float-right">&#9662;</span>
                             </button>
 
-                            <!-- Dropdown panel -->
                             <div x-show="open" @click.away="open = false"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600">
                                 <div class="p-2 overflow-y-auto max-h-60">
                                     @foreach($categories as $category)
@@ -77,20 +81,25 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <!-- Tag Filter -->
                     <div>
-                        <label for="tagSelect"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Tag</label>
-                        <div x-data="{ open: false }" class="relative">
+                        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Tag</label>
+                        <div x-data="{ open: false }" class="relative" x-cloak>
                             <button type="button" @click="open = !open"
                                 class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 Select Tags
                                 <span class="float-right">&#9662;</span>
                             </button>
+
                             <div x-show="open" @click.away="open = false"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600">
                                 <div class="p-2 overflow-y-auto max-h-60">
                                     @foreach($tags as $tag)
@@ -110,15 +119,21 @@
 
                     <!-- Author Filter -->
                     <div>
-                        <label for="authorSelect"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Author</label>
-                        <div x-data="{ open: false }" class="relative">
+                        <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Author</label>
+                        <div x-data="{ open: false }" class="relative" x-cloak>
                             <button type="button" @click="open = !open"
                                 class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 Select Authors
                                 <span class="float-right">&#9662;</span>
                             </button>
+
                             <div x-show="open" @click.away="open = false"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600">
                                 <div class="p-2 overflow-y-auto max-h-60">
                                     @foreach($authors as $author)
@@ -134,8 +149,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
                 <!-- Saved Posts Filter -->
@@ -143,8 +158,9 @@
                 <div class="flex items-center">
                     <input type="checkbox" name="saved" id="savedCheckbox" value="1" @checked(request('saved'))
                         class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500">
-                    <label for="savedCheckbox" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Show Saved Posts
-                        Only</label>
+                    <label for="savedCheckbox" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        Show Saved Posts Only
+                    </label>
                 </div>
                 @endauth
 
@@ -156,6 +172,19 @@
                 </noscript>
             </form>
         </div>
+
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
+        <script>
+            document.getElementById('filterForm').addEventListener('change', function() {
+                this.submit();
+            });
+        </script>
+
+
 
         <!-- Posts Grid -->
         @if($posts->count())
